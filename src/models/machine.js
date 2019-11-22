@@ -11,6 +11,12 @@ const machineSchema = new mongoose.Schema(
   }
 );
 
+machineSchema.virtual("failures", {
+  ref: "Failure",
+  localField: "_id",
+  foreignField: "machine"
+});
+
 const Machine = mongoose.model("Machine", machineSchema);
 
 module.exports = Machine;
