@@ -67,6 +67,9 @@ router.patch("/machines/:id", async (req, res) => {
 router.delete("/machines/:id", async (req, res) => {
   try {
     const machine = await Machine.findByIdAndDelete(req.params.id);
+
+    if (!machine) return res.status(404).send({ error: "Not found" });
+
     res.status(200).send(machine);
   } catch (error) {
     res.status(500).send(error);
