@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 
 const machineSchema = new mongoose.Schema(
   {
-    name: String,
-    required: true,
-    trim: true
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    }
   },
   { timestamps: true }
 );
