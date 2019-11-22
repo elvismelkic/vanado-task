@@ -6,9 +6,7 @@ const machineSchema = new mongoose.Schema(
     required: true,
     trim: true
   },
-  {
-    timestamps: true
-  }
+  { timestamps: true }
 );
 
 machineSchema.virtual("failures", {

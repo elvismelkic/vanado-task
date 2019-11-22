@@ -26,6 +26,12 @@ const failureSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+failureSchema.virtual("files", {
+  ref: "File",
+  localField: "_id",
+  foreignField: "failure"
+});
+
 const Failure = mongoose.model("Failure", failureSchema);
 
 module.exports = Failure;
