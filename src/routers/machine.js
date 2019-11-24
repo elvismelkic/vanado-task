@@ -1,6 +1,7 @@
 const express = require("express");
 const Machine = require("../models/machine");
 const Failure = require("../models/failure");
+const errorBuilder = require("../utils/errorBuilder");
 const router = new express.Router();
 
 router.get("/machines", async (req, res) => {
@@ -9,7 +10,7 @@ router.get("/machines", async (req, res) => {
   try {
     res.status(200).send(allMachines);
   } catch (error) {
-    res.status(400).send(error);
+    errorBuilder.generic(res, error);
   }
 });
 
@@ -17,13 +18,13 @@ router.get("/machines/:id", async (req, res) => {
   try {
     const machine = await Machine.findById(req.params.id);
 
-    if (!machine) return res.status(404).send({ error: "Not found" });
+    if (!machine) return errorBuilder.notFound(res);
 
     const failures = await Failure.find({ machine: machine._id });
 
     res.status(200).send({ machine, failures });
   } catch (error) {
-    res.status(400).send(error);
+    errorBuilder.generic(res, error);
   }
 });
 
@@ -34,7 +35,7 @@ router.post("/machines", async (req, res) => {
     await machine.save();
     res.status(201).send(machine);
   } catch (error) {
-    res.status(400).send(error);
+    errorBuilder.generic(res, error);
   }
 });
 
@@ -46,13 +47,13 @@ router.patch("/machines/:id", async (req, res) => {
   );
 
   if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
+    return errorBuilder.invalidUpdates(res);
   }
 
   try {
     const machine = await Machine.findById(req.params.id);
 
-    if (!machine) return res.status(404).send({ error: "Not found" });
+    if (!machine) return errorBuilder.notFound(res);
 
     updates.forEach(update => (machine[update] = req.body[update]));
 
@@ -60,7 +61,7 @@ router.patch("/machines/:id", async (req, res) => {
 
     res.status(200).send(machine);
   } catch (error) {
-    res.status(400).send(error);
+    errorBuilder.generic(res, error);
   }
 });
 
@@ -68,11 +69,11 @@ router.delete("/machines/:id", async (req, res) => {
   try {
     const machine = await Machine.findByIdAndDelete(req.params.id);
 
-    if (!machine) return res.status(404).send({ error: "Not found" });
+    if (!machine) return errorBuilder.notFound(res);
 
     res.status(200).send(machine);
   } catch (error) {
-    res.status(500).send(error);
+    errorBuilder.generic(res, error);
   }
 });
 
