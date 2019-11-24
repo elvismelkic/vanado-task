@@ -2,6 +2,7 @@ const express = require("express");
 const Machine = require("../models/machine");
 const Failure = require("../models/failure");
 const errorBuilder = require("../utils/errorBuilder");
+const { isValidUpdate } = require("../utils/helpers");
 const router = new express.Router();
 
 router.get("/machines", async (req, res) => {
@@ -42,13 +43,9 @@ router.post("/machines", async (req, res) => {
 router.patch("/machines/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name"];
-  const isValidOperation = updates.every(update =>
-    allowedUpdates.includes(update)
-  );
 
-  if (!isValidOperation) {
+  if (!isValidUpdate(updates, allowedUpdates))
     return errorBuilder.invalidUpdates(res);
-  }
 
   try {
     const machine = await Machine.findById(req.params.id);

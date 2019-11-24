@@ -2,6 +2,7 @@ const express = require("express");
 const Machine = require("../models/machine");
 const Failure = require("../models/failure");
 const errorBuilder = require("../utils/errorBuilder");
+const { isValidUpdate } = require("../utils/helpers");
 const router = new express.Router();
 
 router.get("/failures", async (req, res) => {
@@ -41,11 +42,9 @@ router.post("/failures", async (req, res) => {
 router.patch("/failures/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "description", "isFixed", "machine"];
-  const isValidUpdate = updates.every(update =>
-    allowedUpdates.includes(update)
-  );
 
-  if (!isValidUpdate) return errorBuilder.invalidUpdates(res);
+  if (!isValidUpdate(updates, allowedUpdates))
+    return errorBuilder.invalidUpdates(res);
 
   if (req.body.machine) {
     const exists = await Machine.exists({ _id: req.body.machine });
