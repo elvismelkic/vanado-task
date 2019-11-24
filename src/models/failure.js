@@ -12,7 +12,7 @@ const failureSchema = new mongoose.Schema(
       required: false,
       trim: true
     },
-    isFixed: {
+    fixed: {
       type: Boolean,
       required: true,
       default: false

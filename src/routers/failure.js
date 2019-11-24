@@ -41,7 +41,7 @@ router.post("/failures", async (req, res) => {
 
 router.patch("/failures/:id", async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["name", "description", "isFixed", "machine"];
+  const allowedUpdates = ["name", "description", "fixed", "machine"];
 
   if (!isValidUpdate(updates, allowedUpdates))
     return errorBuilder.invalidUpdates(res);
