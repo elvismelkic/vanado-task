@@ -14,6 +14,8 @@ const machineTwo = {
   name: "Machine 2"
 };
 
+const wrongMachineId = new mongoose.Types.ObjectId();
+
 const failureOne = {
   _id: new mongoose.Types.ObjectId(),
   name: "Failure 1",
@@ -67,5 +69,8 @@ const setupDatabase = async () => {
 };
 
 module.exports = {
-  setupDatabase
+  setupDatabase,
+  machineOne,
+  machineOneId,
+  wrongMachineId
 };
