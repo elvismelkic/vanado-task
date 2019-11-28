@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
+    "test": "env-cmd -f ./config/test.env jest --watchAll --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,8 @@
     "mongoose": "^5.7.12"
   },
   "devDependencies": {
+    "env-cmd": "^10.0.1",
+    "jest": "^24.9.0",
     "nodemon": "^2.0.1"
   }
 }
