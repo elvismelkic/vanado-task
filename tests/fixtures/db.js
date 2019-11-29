@@ -72,5 +72,6 @@ module.exports = {
   setupDatabase,
   machineOne,
   machineOneId,
+  machineTwo,
   wrongMachineId
 };
