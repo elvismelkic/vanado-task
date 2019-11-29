@@ -129,6 +129,26 @@ test("Should return error if updating machine with nonexisting fields", async ()
 });
 
 // DELETE TESTS
-test("Should delete machine if machine exists", async () => {});
-test("Should return error if deleting machine that doesn't exists", async () => {});
-test("Should return error if deleting machine on random route (not ID type)", async () => {});
+test("Should delete machine if machine exists", async () => {
+  await request(app)
+    .delete(`/machines/${machineOneId}`)
+    .send()
+    .expect(200);
+
+  const machine = await Machine.findById(machineOneId);
+  expect(machine).toBeNull();
+});
+
+test("Should return error if deleting machine that doesn't exists", async () => {
+  await request(app)
+    .delete(`/machines/${wrongMachineId}`)
+    .send()
+    .expect(404);
+});
+
+test("Should return error if deleting machine on random route (not ID type)", async () => {
+  await request(app)
+    .delete("/machines/somerandomroute")
+    .send()
+    .expect(400);
+});
