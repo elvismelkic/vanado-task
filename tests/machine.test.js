@@ -20,8 +20,8 @@ test("Should add new machine", async () => {
     .expect(201);
 
   const machine = await Machine.findById(response.body._id);
-  expect(machine).not.toBeNull();
   expect(response.body).toMatchObject({ name: "Test Machine Name" });
+  expect(machine.name).toBe("Test Machine Name");
 });
 
 test("Should return error if adding new machine with name that is taken", async () => {
