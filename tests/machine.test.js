@@ -30,6 +30,13 @@ test("Should return error if adding new machine with name that is taken", async 
     .expect(400);
 });
 
+test("Should return error if adding new machine with empty name", async () => {
+  await request(app)
+    .post("/machines")
+    .send({ name: "" })
+    .expect(400);
+});
+
 // GET TESTS
 test("Should get all machines", async () => {
   const response = await request(app)
