@@ -31,7 +31,12 @@ router.get("/failures/:id", async (req, res) => {
 });
 
 router.post("/failures", async (req, res) => {
+  machineExists = await Machine.exists({ _id: req.body.machine });
+
+  if (!machineExists) return errorBuilder.notFound(res);
+
   const failure = new Failure(req.body);
+
   try {
     await failure.save();
     res.status(201).send(failure);
