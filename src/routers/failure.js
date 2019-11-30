@@ -5,7 +5,7 @@ const errorBuilder = require("../utils/errorBuilder");
 const { isValidUpdate } = require("../utils/helpers");
 const router = new express.Router();
 
-router.get("/failures", async (req, res) => {
+router.get("/api/failures", async (req, res) => {
   try {
     const failures = await Failure.find({}).sort({
       fixed: 1,
@@ -18,7 +18,7 @@ router.get("/failures", async (req, res) => {
   }
 });
 
-router.get("/failures/:id", async (req, res) => {
+router.get("/api/failures/:id", async (req, res) => {
   try {
     const failure = await Failure.findById(req.params.id);
 
@@ -30,7 +30,7 @@ router.get("/failures/:id", async (req, res) => {
   }
 });
 
-router.post("/failures", async (req, res) => {
+router.post("/api/failures", async (req, res) => {
   machineExists = await Machine.exists({ _id: req.body.machine });
 
   if (!machineExists) return errorBuilder.notFound(res);
@@ -45,7 +45,7 @@ router.post("/failures", async (req, res) => {
   }
 });
 
-router.patch("/failures/:id", async (req, res) => {
+router.patch("/api/failures/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "description", "fixed", "machine"];
 
@@ -76,7 +76,7 @@ router.patch("/failures/:id", async (req, res) => {
   }
 });
 
-router.delete("/failures/:id", async (req, res) => {
+router.delete("/api/failures/:id", async (req, res) => {
   try {
     const failure = await Failure.findByIdAndDelete(req.params.id);
 

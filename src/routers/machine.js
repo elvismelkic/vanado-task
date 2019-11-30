@@ -5,7 +5,7 @@ const errorBuilder = require("../utils/errorBuilder");
 const { isValidUpdate } = require("../utils/helpers");
 const router = new express.Router();
 
-router.get("/machines", async (req, res) => {
+router.get("/api/machines", async (req, res) => {
   const allMachines = await Machine.find({});
 
   try {
@@ -15,7 +15,7 @@ router.get("/machines", async (req, res) => {
   }
 });
 
-router.get("/machines/:id", async (req, res) => {
+router.get("/api/machines/:id", async (req, res) => {
   try {
     const machine = await Machine.findById(req.params.id);
 
@@ -29,7 +29,7 @@ router.get("/machines/:id", async (req, res) => {
   }
 });
 
-router.post("/machines", async (req, res) => {
+router.post("/api/machines", async (req, res) => {
   const machine = new Machine(req.body);
 
   try {
@@ -40,7 +40,7 @@ router.post("/machines", async (req, res) => {
   }
 });
 
-router.patch("/machines/:id", async (req, res) => {
+router.patch("/api/machines/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name"];
 
@@ -62,7 +62,7 @@ router.patch("/machines/:id", async (req, res) => {
   }
 });
 
-router.delete("/machines/:id", async (req, res) => {
+router.delete("/api/machines/:id", async (req, res) => {
   try {
     const machine = await Machine.findByIdAndDelete(req.params.id);
 

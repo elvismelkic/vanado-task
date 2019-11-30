@@ -15,7 +15,7 @@ beforeEach(setupDatabase);
 // POST TESTS
 test("Should add new machine", async () => {
   const response = await request(app)
-    .post("/machines")
+    .post("/api/machines")
     .send({ name: "Test Machine Name" })
     .expect(201);
 
@@ -26,14 +26,14 @@ test("Should add new machine", async () => {
 
 test("Should return error if adding new machine with name that is taken", async () => {
   await request(app)
-    .post("/machines")
+    .post("/api/machines")
     .send({ name: machineOne.name })
     .expect(400);
 });
 
 test("Should return error if adding new machine with empty name", async () => {
   await request(app)
-    .post("/machines")
+    .post("/api/machines")
     .send({ name: "" })
     .expect(400);
 });
@@ -41,7 +41,7 @@ test("Should return error if adding new machine with empty name", async () => {
 // GET TESTS
 test("Should get all machines", async () => {
   const response = await request(app)
-    .get("/machines")
+    .get("/api/machines")
     .send()
     .expect(200);
 
@@ -50,7 +50,7 @@ test("Should get all machines", async () => {
 
 test("Should get a machine by ID", async () => {
   const response = await request(app)
-    .get(`/machines/${machineOneId}`)
+    .get(`/api/machines/${machineOneId}`)
     .send()
     .expect(200);
 
@@ -62,7 +62,7 @@ test("Should get a machine by ID", async () => {
 
 test("Should return error if getting a machine by nonexisting ID", async () => {
   const response = await request(app)
-    .get(`/machines/${wrongId}`)
+    .get(`/api/machines/${wrongId}`)
     .send()
     .expect(404);
 
@@ -71,7 +71,7 @@ test("Should return error if getting a machine by nonexisting ID", async () => {
 
 test("Should return error if getting a machine by random route (not ID type)", async () => {
   await request(app)
-    .get("/machines/somerandomroute")
+    .get("/api/machines/somerandomroute")
     .send()
     .expect(400);
 });
@@ -79,7 +79,7 @@ test("Should return error if getting a machine by random route (not ID type)", a
 // UPDATE TESTS
 test("Should update machine if machine exists", async () => {
   const response = await request(app)
-    .patch(`/machines/${machineOneId}`)
+    .patch(`/api/machines/${machineOneId}`)
     .send({ name: "Updated Machine Name" })
     .expect(200);
 
@@ -90,7 +90,7 @@ test("Should update machine if machine exists", async () => {
 
 test("Should return error if updating machine that doesn't exists", async () => {
   const response = await request(app)
-    .patch(`/machines/${wrongId}`)
+    .patch(`/api/machines/${wrongId}`)
     .send({ name: "Updated Machine Name" })
     .expect(404);
 
@@ -99,21 +99,21 @@ test("Should return error if updating machine that doesn't exists", async () => 
 
 test("Should return error if updating machine on random route (not ID type)", async () => {
   await request(app)
-    .patch("/machines/somerandomroute")
+    .patch("/api/machines/somerandomroute")
     .send({ name: "Updated Machine Name" })
     .expect(400);
 });
 
 test("Should return error if updating machine with name that is taken", async () => {
   await request(app)
-    .patch(`/machines/${machineOneId}`)
+    .patch(`/api/machines/${machineOneId}`)
     .send({ name: machineTwo.name })
     .expect(400);
 });
 
 test("Should return error if updating machine with invalid values", async () => {
   const response = await request(app)
-    .patch(`/machines/${machineOneId}`)
+    .patch(`/api/machines/${machineOneId}`)
     .send({ name: "" })
     .expect(400);
 
@@ -122,7 +122,7 @@ test("Should return error if updating machine with invalid values", async () => 
 
 test("Should return error if updating machine with nonexisting fields", async () => {
   const response = await request(app)
-    .patch(`/machines/${machineOneId}`)
+    .patch(`/api/machines/${machineOneId}`)
     .send({ manufacturer: "MAN" })
     .expect(400);
 
@@ -132,7 +132,7 @@ test("Should return error if updating machine with nonexisting fields", async ()
 // DELETE TESTS
 test("Should delete machine if machine exists", async () => {
   await request(app)
-    .delete(`/machines/${machineOneId}`)
+    .delete(`/api/machines/${machineOneId}`)
     .send()
     .expect(200);
 
@@ -142,7 +142,7 @@ test("Should delete machine if machine exists", async () => {
 
 test("Should return error if deleting machine that doesn't exists", async () => {
   const response = await request(app)
-    .delete(`/machines/${wrongId}`)
+    .delete(`/api/machines/${wrongId}`)
     .send()
     .expect(404);
 
@@ -151,7 +151,7 @@ test("Should return error if deleting machine that doesn't exists", async () => 
 
 test("Should return error if deleting machine on random route (not ID type)", async () => {
   await request(app)
-    .delete("/machines/somerandomroute")
+    .delete("/api/machines/somerandomroute")
     .send()
     .expect(400);
 });

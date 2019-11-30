@@ -14,7 +14,7 @@ beforeEach(setupDatabase);
 // POST TESTS
 test("Should add new failure to the machine", async () => {
   const response = await request(app)
-    .post("/failures")
+    .post("/api/failures")
     .send({
       name: "Test Failure Name",
       description: "Test Failure Description",
@@ -37,7 +37,7 @@ test("Should add new failure to the machine", async () => {
 
 test("Should add new failure to the machine with just the required fields", async () => {
   const response = await request(app)
-    .post("/failures")
+    .post("/api/failures")
     .send({
       name: "Test Failure Name",
       machine: machineOneId
@@ -57,7 +57,7 @@ test("Should add new failure to the machine with just the required fields", asyn
 
 test("Should return error if adding new failure with empty name", async () => {
   await request(app)
-    .post("/failures")
+    .post("/api/failures")
     .send({
       name: "",
       description: "Test Failure Description",
@@ -69,7 +69,7 @@ test("Should return error if adding new failure with empty name", async () => {
 
 test("Should return error if adding new failure to nonexisting machine", async () => {
   await request(app)
-    .post("/failures")
+    .post("/api/failures")
     .send({
       name: "Test Failure Name",
       description: "Test Failure Description",
@@ -82,7 +82,7 @@ test("Should return error if adding new failure to nonexisting machine", async (
 // GET TESTS
 test("Should get all failures", async () => {
   const response = await request(app)
-    .get("/failures")
+    .get("/api/failures")
     .send()
     .expect(200);
 
@@ -91,7 +91,7 @@ test("Should get all failures", async () => {
 
 test("Should get a failure by ID", async () => {
   const response = await request(app)
-    .get(`/failures/${failureOne._id}`)
+    .get(`/api/failures/${failureOne._id}`)
     .send()
     .expect(200);
 
@@ -100,7 +100,7 @@ test("Should get a failure by ID", async () => {
 
 test("Should return error if getting a failure by nonexisting ID", async () => {
   const response = await request(app)
-    .get(`/failures/${wrongId}`)
+    .get(`/api/failures/${wrongId}`)
     .send()
     .expect(404);
 
@@ -109,7 +109,7 @@ test("Should return error if getting a failure by nonexisting ID", async () => {
 
 test("Should return error if getting a failure by random route (not ID type)", async () => {
   await request(app)
-    .get("/failures/somerandomeroute")
+    .get("/api/failures/somerandomeroute")
     .send()
     .expect(400);
 });
@@ -117,7 +117,7 @@ test("Should return error if getting a failure by random route (not ID type)", a
 // UPDATE TESTS
 test("Should update failure if failure exists", async () => {
   const response = await request(app)
-    .patch(`/failures/${failureOne._id}`)
+    .patch(`/api/failures/${failureOne._id}`)
     .send({ name: "Updated Failure Name" })
     .expect(200);
 
@@ -128,7 +128,7 @@ test("Should update failure if failure exists", async () => {
 
 test("Should return error if updating failure that doesn't exists", async () => {
   const response = await request(app)
-    .patch(`/failures/${wrongId}`)
+    .patch(`/api/failures/${wrongId}`)
     .send({ name: "Updated Failure Name" })
     .expect(404);
 
@@ -137,14 +137,14 @@ test("Should return error if updating failure that doesn't exists", async () => 
 
 test("Should return error if updating failure on random route (not ID type)", async () => {
   await request(app)
-    .patch("/failures/somerandomroute")
+    .patch("/api/failures/somerandomroute")
     .send({ name: "Updated Failure Name" })
     .expect(400);
 });
 
 test("Should return error if updating failure with invalid values", async () => {
   const response = await request(app)
-    .patch(`/failures/${failureOne._id}`)
+    .patch(`/api/failures/${failureOne._id}`)
     .send({ name: "" })
     .expect(400);
 
@@ -153,7 +153,7 @@ test("Should return error if updating failure with invalid values", async () => 
 
 test("Should return error if updating failure with nonexisting fields", async () => {
   const response = await request(app)
-    .patch(`/failures/${failureOne._id}`)
+    .patch(`/api/failures/${failureOne._id}`)
     .send({ responsibleEmployee: "John Smith" })
     .expect(400);
 
@@ -162,7 +162,7 @@ test("Should return error if updating failure with nonexisting fields", async ()
 
 test("Should return error if updating failure to belong to nonexisting machine", async () => {
   const response = await request(app)
-    .patch(`/failures/${failureOne._id}`)
+    .patch(`/api/failures/${failureOne._id}`)
     .send({ machine: wrongId })
     .expect(400);
 
@@ -172,7 +172,7 @@ test("Should return error if updating failure to belong to nonexisting machine",
 // DELETE TESTS
 test("Should delete failure if failure exists", async () => {
   await request(app)
-    .delete(`/failures/${failureOne._id}`)
+    .delete(`/api/failures/${failureOne._id}`)
     .send()
     .expect(200);
 
@@ -182,7 +182,7 @@ test("Should delete failure if failure exists", async () => {
 
 test("Should return error if deleting failure that doesn't exists", async () => {
   const response = await request(app)
-    .delete(`/failures/${wrongId}`)
+    .delete(`/api/failures/${wrongId}`)
     .send()
     .expect(404);
 
@@ -191,7 +191,7 @@ test("Should return error if deleting failure that doesn't exists", async () => 
 
 test("Should return error if deleting failure on random route (not ID type)", async () => {
   await request(app)
-    .delete("/failures/somerandomroute")
+    .delete("/api/failures/somerandomroute")
     .send()
     .expect(400);
 });
