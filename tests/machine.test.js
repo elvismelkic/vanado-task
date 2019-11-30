@@ -141,10 +141,12 @@ test("Should delete machine if machine exists", async () => {
 });
 
 test("Should return error if deleting machine that doesn't exists", async () => {
-  await request(app)
+  const response = await request(app)
     .delete(`/machines/${wrongId}`)
     .send()
     .expect(404);
+
+  expect(response.body.error).toBe("Not found");
 });
 
 test("Should return error if deleting machine on random route (not ID type)", async () => {
