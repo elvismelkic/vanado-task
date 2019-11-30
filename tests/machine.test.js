@@ -56,7 +56,7 @@ test("Should get a machine by ID", async () => {
 
   const machine = await Machine.findById(machineOneId);
   const failures = await Failure.find({ machine: machine._id });
-  expect(machine.name).toBe(response.body.machine.name);
+  expect(machine.name).toBe(response.body.name);
   expect(failures.length).toBe(response.body.failures.length);
 });
 

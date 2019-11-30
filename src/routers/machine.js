@@ -17,13 +17,13 @@ router.get("/api/machines", async (req, res) => {
 
 router.get("/api/machines/:id", async (req, res) => {
   try {
-    const machine = await Machine.findById(req.params.id);
+    const machine = await Machine.findById(req.params.id).lean();
 
     if (!machine) return errorBuilder.notFound(res);
 
     const failures = await Failure.find({ machine: machine._id });
 
-    res.status(200).send({ machine, failures });
+    res.status(200).send({ ...machine, failures });
   } catch (error) {
     errorBuilder.generic(res, error);
   }
