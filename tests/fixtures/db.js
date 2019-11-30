@@ -73,5 +73,6 @@ module.exports = {
   machineOne,
   machineOneId,
   machineTwo,
-  wrongId
+  wrongId,
+  failureOne
 };

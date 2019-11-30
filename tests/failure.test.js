@@ -2,7 +2,12 @@ const request = require("supertest");
 const app = require("../src/app");
 const Failure = require("../src/models/failure");
 const Machine = require("../src/models/machine");
-const { setupDatabase, machineOneId, wrongId } = require("./fixtures/db");
+const {
+  setupDatabase,
+  machineOneId,
+  wrongId,
+  failureOne
+} = require("./fixtures/db");
 
 beforeEach(setupDatabase);
 
@@ -84,19 +89,109 @@ test("Should get all failures", async () => {
   expect(response.body.length).toBe(5);
 });
 
-test("Should get a failure by ID", async () => {});
-test("Should return error if getting a failure by nonexisting ID", async () => {});
-test("Should return error if getting a failure by random route (not ID type)", async () => {});
+test("Should get a failure by ID", async () => {
+  const response = await request(app)
+    .get(`/failures/${failureOne._id}`)
+    .send()
+    .expect(200);
+
+  expect(failureOne.name).toBe(response.body.name);
+});
+
+test("Should return error if getting a failure by nonexisting ID", async () => {
+  const response = await request(app)
+    .get(`/failures/${wrongId}`)
+    .send()
+    .expect(404);
+
+  expect(response.body.error).toBe("Not found");
+});
+
+test("Should return error if getting a failure by random route (not ID type)", async () => {
+  await request(app)
+    .get("/failures/somerandomeroute")
+    .send()
+    .expect(400);
+});
 
 // UPDATE TESTS
-test("Should update failure if failure exists", async () => {});
-test("Should return error if updating failure that doesn't exists", async () => {});
-test("Should return error if updating failure on random route (not ID type)", async () => {});
-test("Should return error if updating failure with invalid values", async () => {});
-test("Should return error if updating failure with nonexisting fields", async () => {});
-test("Should return error if updating failure to belong to nonexisting machine", async () => {});
+test("Should update failure if failure exists", async () => {
+  const response = await request(app)
+    .patch(`/failures/${failureOne._id}`)
+    .send({ name: "Updated Failure Name" })
+    .expect(200);
+
+  const failure = await Failure.findById(failureOne._id);
+  expect(failure.name).toBe(response.body.name);
+  expect(response.body.name).toBe("Updated Failure Name");
+});
+
+test("Should return error if updating failure that doesn't exists", async () => {
+  const response = await request(app)
+    .patch(`/failures/${wrongId}`)
+    .send({ name: "Updated Failure Name" })
+    .expect(404);
+
+  expect(response.body.error).toBe("Not found");
+});
+
+test("Should return error if updating failure on random route (not ID type)", async () => {
+  await request(app)
+    .patch("/failures/somerandomroute")
+    .send({ name: "Updated Failure Name" })
+    .expect(400);
+});
+
+test("Should return error if updating failure with invalid values", async () => {
+  const response = await request(app)
+    .patch(`/failures/${failureOne._id}`)
+    .send({ name: "" })
+    .expect(400);
+
+  expect(response.body.errors.name.kind).toBe("required");
+});
+
+test("Should return error if updating failure with nonexisting fields", async () => {
+  const response = await request(app)
+    .patch(`/failures/${failureOne._id}`)
+    .send({ responsibleEmployee: "John Smith" })
+    .expect(400);
+
+  expect(response.body.error).toBe("Invalid updates");
+});
+
+test("Should return error if updating failure to belong to nonexisting machine", async () => {
+  const response = await request(app)
+    .patch(`/failures/${failureOne._id}`)
+    .send({ machine: wrongId })
+    .expect(400);
+
+  expect(response.body.error).toBe("Invalid updates");
+});
 
 // DELETE TESTS
-test("Should delete failure if failure exists", async () => {});
-test("Should return error if deleting failure that doesn't exists", async () => {});
-test("Should return error if deleting failure on random route (not ID type)", async () => {});
+test("Should delete failure if failure exists", async () => {
+  await request(app)
+    .delete(`/failures/${failureOne._id}`)
+    .send()
+    .expect(200);
+
+  const failure = await Failure.findById(failureOne._id);
+  expect(failure).toBeNull();
+});
+
+test("Should return error if deleting failure that doesn't exists", async () => {
+  const response = await request(app)
+    .delete(`/failures/${wrongId}`)
+    .send()
+    .expect(404);
+
+  expect(response.body.error).toBe("Not found");
+});
+
+test("Should return error if deleting failure on random route (not ID type)", async () => {
+  await request(app)
+    .delete("/failures/somerandomroute")
+    .send()
+    .expect(400);
+});
