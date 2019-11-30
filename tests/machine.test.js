@@ -7,7 +7,7 @@ const {
   machineOne,
   machineOneId,
   machineTwo,
-  wrongMachineId
+  wrongId
 } = require("./fixtures/db");
 
 beforeEach(setupDatabase);
@@ -62,7 +62,7 @@ test("Should get a machine by ID", async () => {
 
 test("Should return error if getting a machine by nonexisting ID", async () => {
   const response = await request(app)
-    .get(`/machines/${wrongMachineId}`)
+    .get(`/machines/${wrongId}`)
     .send()
     .expect(404);
 
@@ -89,7 +89,7 @@ test("Should update machine if machine exists", async () => {
 
 test("Should return error if updating machine that doesn't exists", async () => {
   const response = await request(app)
-    .patch(`/machines/${wrongMachineId}`)
+    .patch(`/machines/${wrongId}`)
     .send({ name: "Updated Machine Name" })
     .expect(404);
 
@@ -141,7 +141,7 @@ test("Should delete machine if machine exists", async () => {
 
 test("Should return error if deleting machine that doesn't exists", async () => {
   await request(app)
-    .delete(`/machines/${wrongMachineId}`)
+    .delete(`/machines/${wrongId}`)
     .send()
     .expect(404);
 });

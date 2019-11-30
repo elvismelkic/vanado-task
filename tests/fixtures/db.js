@@ -14,7 +14,7 @@ const machineTwo = {
   name: "Machine 2"
 };
 
-const wrongMachineId = new mongoose.Types.ObjectId();
+const wrongId = new mongoose.Types.ObjectId();
 
 const failureOne = {
   _id: new mongoose.Types.ObjectId(),
@@ -73,5 +73,5 @@ module.exports = {
   machineOne,
   machineOneId,
   machineTwo,
-  wrongMachineId
+  wrongId
 };

@@ -2,11 +2,7 @@ const request = require("supertest");
 const app = require("../src/app");
 const Failure = require("../src/models/failure");
 const Machine = require("../src/models/machine");
-const {
-  setupDatabase,
-  machineOneId,
-  wrongMachineId
-} = require("./fixtures/db");
+const { setupDatabase, machineOneId, wrongId } = require("./fixtures/db");
 
 beforeEach(setupDatabase);
 
@@ -73,13 +69,21 @@ test("Should return error if adding new failure to nonexisting machine", async (
       name: "Test Failure Name",
       description: "Test Failure Description",
       fixed: false,
-      machine: wrongMachineId
+      machine: wrongId
     })
     .expect(404);
 });
 
 // GET TESTS
-test("Should get all failures", async () => {});
+test("Should get all failures", async () => {
+  const response = await request(app)
+    .get("/failures")
+    .send()
+    .expect(200);
+
+  expect(response.body.length).toBe(5);
+});
+
 test("Should get a failure by ID", async () => {});
 test("Should return error if getting a failure by nonexisting ID", async () => {});
 test("Should return error if getting a failure by random route (not ID type)", async () => {});
