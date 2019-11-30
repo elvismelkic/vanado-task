@@ -85,6 +85,7 @@ test("Should update machine if machine exists", async () => {
 
   const machine = await Machine.findById(machineOneId);
   expect(machine.name).toBe(response.body.name);
+  expect(response.body.name).toBe("Updated Machine Name");
 });
 
 test("Should return error if updating machine that doesn't exists", async () => {
