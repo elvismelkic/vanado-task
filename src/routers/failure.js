@@ -31,7 +31,12 @@ router.get("/failures/:id", async (req, res) => {
 });
 
 router.post("/failures", async (req, res) => {
+  machineExists = await Machine.exists({ _id: req.body.machine });
+
+  if (!machineExists) return errorBuilder.notFound(res);
+
   const failure = new Failure(req.body);
+
   try {
     await failure.save();
     res.status(201).send(failure);
@@ -57,6 +62,8 @@ router.patch("/failures/:id", async (req, res) => {
 
   try {
     const failure = await Failure.findById(req.params.id);
+
+    if (!failure) return errorBuilder.notFound(res);
 
     updates.forEach(update => {
       failure[update] = req.body[update];
