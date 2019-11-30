@@ -63,6 +63,8 @@ router.patch("/failures/:id", async (req, res) => {
   try {
     const failure = await Failure.findById(req.params.id);
 
+    if (!failure) return errorBuilder.notFound(res);
+
     updates.forEach(update => {
       failure[update] = req.body[update];
     });
