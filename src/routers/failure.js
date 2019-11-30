@@ -8,7 +8,7 @@ const router = new express.Router();
 router.get("/failures", async (req, res) => {
   try {
     const failures = await Failure.find({}).sort({
-      fixed: -1,
+      fixed: 1,
       updatedAt: 1
     });
 
