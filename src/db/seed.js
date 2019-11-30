@@ -1,13 +1,7 @@
 const mongoose = require("mongoose");
 const Machine = require("../../src/models/machine");
 const Failure = require("../../src/models/failure");
-
-mongoose.connect("mongodb://127.0.0.1:27017/vanado-task", {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
-});
+require("./mongoose");
 
 const machineOneId = new mongoose.Types.ObjectId();
 const machineOne = {
