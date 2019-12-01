@@ -7,10 +7,12 @@ const router = new express.Router();
 
 router.get("/api/failures", async (req, res) => {
   try {
-    const failures = await Failure.find({}).sort({
-      fixed: 1,
-      updatedAt: 1
-    });
+    const failures = await Failure.find({})
+      .sort({
+        fixed: 1,
+        updatedAt: 1
+      })
+      .populate("machine");
 
     res.status(200).send(failures);
   } catch (error) {
@@ -20,7 +22,7 @@ router.get("/api/failures", async (req, res) => {
 
 router.get("/api/failures/:id", async (req, res) => {
   try {
-    const failure = await Failure.findById(req.params.id);
+    const failure = await Failure.findById(req.params.id).populate("machine");
 
     if (!failure) return errorBuilder.notFound(res);
 

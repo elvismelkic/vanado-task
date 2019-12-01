@@ -64,9 +64,11 @@ router.patch("/api/machines/:id", async (req, res) => {
 
 router.delete("/api/machines/:id", async (req, res) => {
   try {
-    const machine = await Machine.findByIdAndDelete(req.params.id);
+    const machine = await Machine.findById(req.params.id);
 
     if (!machine) return errorBuilder.notFound(res);
+
+    await machine.remove();
 
     res.status(200).send(machine);
   } catch (error) {
