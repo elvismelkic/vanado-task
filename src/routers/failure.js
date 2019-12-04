@@ -6,8 +6,11 @@ const { isValidUpdate } = require("../utils/helpers");
 const router = new express.Router();
 
 router.get("/api/failures", async (req, res) => {
+  const { fixed } = req.query;
+  const match = fixed === "true" || fixed === "false" ? { fixed } : null;
+
   try {
-    const failures = await Failure.find({})
+    const failures = await Failure.find(match)
       .sort({
         fixed: 1,
         updatedAt: 1
