@@ -20,7 +20,8 @@ const failureOne = {
   name: "Failure 1",
   description: "Description of failure 1",
   fixed: false,
-  machine: machineOneId
+  machine: machineOneId,
+  priority: "high"
 };
 
 const failureTwo = {
@@ -28,7 +29,8 @@ const failureTwo = {
   name: "Failure 2",
   description: "Description of failure 2",
   fixed: true,
-  machine: machineOneId
+  machine: machineOneId,
+  priority: "low"
 };
 
 const failureThree = {
@@ -36,7 +38,8 @@ const failureThree = {
   name: "Failure 3",
   description: "Description of failure 3",
   fixed: false,
-  machine: machineOneId
+  machine: machineOneId,
+  priority: "moderate"
 };
 
 const failureFour = {
@@ -44,7 +47,8 @@ const failureFour = {
   name: "Failure 4",
   description: "Description of failure 4",
   fixed: true,
-  machine: machineTwoId
+  machine: machineTwoId,
+  priority: "low"
 };
 
 const failureFive = {
@@ -52,7 +56,8 @@ const failureFive = {
   name: "Failure 5",
   description: "Description of failure 5",
   fixed: false,
-  machine: machineTwoId
+  machine: machineTwoId,
+  priority: "high"
 };
 
 const setupDatabase = async () => {

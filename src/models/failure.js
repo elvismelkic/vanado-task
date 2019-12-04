@@ -21,6 +21,12 @@ const failureSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Machine"
+    },
+    priority: {
+      type: String,
+      enum: ["low", "moderate", "high"],
+      default: "moderate",
+      required: true
     }
   },
   { timestamps: true }
