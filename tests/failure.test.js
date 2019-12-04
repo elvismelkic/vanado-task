@@ -19,7 +19,8 @@ test("Should add new failure to the machine", async () => {
       name: "Test Failure Name",
       description: "Test Failure Description",
       fixed: true,
-      machine: machineOneId
+      machine: machineOneId,
+      priority: "high"
     })
     .expect(201);
 
@@ -29,7 +30,8 @@ test("Should add new failure to the machine", async () => {
   expect(response.body).toMatchObject({
     name: "Test Failure Name",
     description: "Test Failure Description",
-    fixed: true
+    fixed: true,
+    priority: "high"
   });
   expect(failure.name).toBe("Test Failure Name");
   expect(machine).not.toBeNull();
@@ -40,7 +42,8 @@ test("Should add new failure to the machine with just the required fields", asyn
     .post("/api/failures")
     .send({
       name: "Test Failure Name",
-      machine: machineOneId
+      machine: machineOneId,
+      priority: "low"
     })
     .expect(201);
 
@@ -49,7 +52,8 @@ test("Should add new failure to the machine with just the required fields", asyn
 
   expect(response.body).toMatchObject({
     name: "Test Failure Name",
-    fixed: false
+    fixed: false,
+    priority: "low"
   });
   expect(failure.name).toBe("Test Failure Name");
   expect(machine).not.toBeNull();
@@ -62,7 +66,8 @@ test("Should return error if adding new failure with empty name", async () => {
       name: "",
       description: "Test Failure Description",
       fixed: false,
-      machine: machineOneId
+      machine: machineOneId,
+      priority: "high"
     })
     .expect(400);
 });
@@ -74,7 +79,8 @@ test("Should return error if adding new failure to nonexisting machine", async (
       name: "Test Failure Name",
       description: "Test Failure Description",
       fixed: false,
-      machine: wrongId
+      machine: wrongId,
+      priority: "high"
     })
     .expect(404);
 });
